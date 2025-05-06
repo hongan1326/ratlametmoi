@@ -8,9 +8,6 @@ st.title("Billionaires Statistics - Interactive Lollipop Chart")
 file_path = 'Billionaires Statistics Dataset.csv'
 df = pd.read_csv(file_path)
 
-# Kiểm tra tên cột
-st.write("Columns in dataset:", df.columns)
-
 # Lọc dữ liệu theo selfMade thông qua selectbox
 self_made_options = df['selfMade'].dropna().unique().tolist()
 selected_self_made = st.selectbox("Select Self-Made Status", options=self_made_options)
