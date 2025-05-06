@@ -26,32 +26,30 @@ for industry in industry_counts['industries'].unique():
             line=dict(color='gray', width=1),  # Đổi đường line thành màu xám nhạt
             text=f"{row['personName']}",  # Hiển thị số lượng người
             textposition="top center",  # Vị trí ghi chú trên mỗi cục
-            textfont=dict(family='Arial', size=14, color='#000000')  # Màu chữ ghi chú là đen tuyền + size lớn hơn
+            textfont=dict(family='Arial', size=12, color='black')  # Màu chữ ghi chú là đen
         ))
 
 # Thiết lập tiêu đề và ghi chú cho biểu đồ
 fig.update_layout(
     title={'text': 'Interactive Lollipop Chart: Billionaires by Industry and Self Made Status', 
-           'font': {'size': 22, 'family': 'Arial', 'color': '#000000', 'bold': True}},  # Tiêu đề in đậm và màu đen tuyền
+           'font': {'size': 20, 'family': 'Arial', 'color': 'black', 'weight': 'bold'}},  # Tiêu đề in đậm và màu đen
     xaxis_title='Industry',
     yaxis_title='Number of Billionaires',
     xaxis=dict(
         tickmode='array', 
         tickvals=industry_counts['industries'].unique(), 
         tickangle=45,
-        title_font=dict(family='Arial', size=16, color='#000000'),  # Màu chữ trục X đen tuyền + to hơn
-        tickfont=dict(family='Arial', size=12, color='#000000')     # Tick text màu đen
+        title_font=dict(family='Arial', size=14, color='black')  # Màu chữ trục X là đen
     ),
     yaxis=dict(
         showgrid=True, 
         gridcolor='lightgray', 
-        title_font=dict(family='Arial', size=16, color='#000000'),  # Màu chữ trục Y đen tuyền + to hơn
-        tickfont=dict(family='Arial', size=12, color='#000000')     # Tick text màu đen
+        title_font=dict(family='Arial', size=14, color='black')  # Màu chữ trục Y là đen
     ),
     plot_bgcolor='white',  # Màu nền trắng
     paper_bgcolor='white',  # Màu nền giấy trắng
-    font=dict(family='Arial', size=13, color='#000000'),  # Màu chữ chung là đen tuyền
-    margin=dict(l=0, r=0, b=50, t=50),
+    font=dict(family='Arial', size=12, color='black'),  # Màu chữ chung là đen
+    margin=dict(l=0, r=0, b=50, t=40),
     showlegend=False
 )
 
