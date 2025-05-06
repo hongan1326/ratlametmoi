@@ -26,13 +26,14 @@ for industry in industry_counts['industries'].unique():
             y=[0, row['personName']], 
             mode='lines+markers',
             marker=dict(color='green' if row['selfMade'] else 'blue', size=10),
-            line=dict(color='black', width=2),
+            line=dict(color='gray', width=1),  # Đổi đường line thành màu xám nhạt
             name=f"{row['industries']} - {'Self Made' if row['selfMade'] else 'Not Self Made'}"
         ))
 
 # Thiết lập tiêu đề và ghi chú cho biểu đồ
 fig.update_layout(
-    title='Interactive Lollipop Chart: Billionaires by Industry and Self Made Status',
+    title={'text': 'Interactive Lollipop Chart: Billionaires by Industry and Self Made Status', 
+           'font': {'size': 20, 'family': 'Arial', 'color': 'black', 'weight': 'bold'}},  # Tiêu đề in đậm
     xaxis_title='Industry',
     yaxis_title='Number of Billionaires',
     xaxis=dict(tickmode='array', tickvals=industry_counts['industries'].unique(), tickangle=45),
