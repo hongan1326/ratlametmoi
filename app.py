@@ -2,37 +2,32 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-st.title("Billionaires Statistics - Lollipop Chart")
+st.title("Thống kê Tỷ phú - Biểu đồ Lollipop")
 
-# Upload CSV file
-uploaded_file = st.file_uploader("Billionaires Statistics Dataset.csv", type=["csv"])
+# Đọc dữ liệu từ file CSV trong repo
+file_path = 'Billionaires Statistics Dataset.csv'  # Đảm bảo file nằm trong cùng thư mục với app.py
+df = pd.read_csv(file_path)
 
-if uploaded_file is not None:
-    # Read the CSV
-    df = pd.read_csv(uploaded_file)
+# Nhóm dữ liệu theo 'Industry' và 'SelfMade'
+industry_counts = df.groupby(['Industry', 'SelfMade'])['Name'].count().reset_index()
 
-    # Group data by 'Industry' and 'SelfMade'
-    industry_counts = df.groupby(['Industry', 'SelfMade'])['Name'].count().reset_index()
+# Tạo biểu đồ lollipop
+fig, ax = plt.subplots(figsize=(10, 6))
 
-    # Create lollipop chart
-    fig, ax = plt.subplots(figsize=(10, 6))
+industries = industry_counts['Industry'].unique()
+colors = {'True': 'green', 'False': 'blue'}
 
-    industries = industry_counts['Industry'].unique()
-    colors = {'True': 'green', 'False': 'blue'}
+for industry in industries:
+    sub_df = industry_counts[industry_counts['Industry'] == industry]
+    for _, row in sub_df.iterrows():
+        ax.plot([industry, industry], [0, row['Name']],
+                marker='o',
+                color=colors[str(row['SelfMade'])])
 
-    for industry in industries:
-        sub_df = industry_counts[industry_counts['Industry'] == industry]
-        for _, row in sub_df.iterrows():
-            ax.plot([industry, industry], [0, row['Name']],
-                    marker='o',
-                    color=colors[str(row['SelfMade'])])
+ax.set_xlabel('Ngành nghề')
+ax.set_ylabel('Số lượng tỷ phú')
+ax.set_title('Biểu đồ Lollipop: Số lượng tỷ phú theo ngành và tình trạng tự lập')
+plt.xticks(rotation=90)
 
-    ax.set_xlabel('Industry')
-    ax.set_ylabel('Number of Billionaires')
-    ax.set_title('Lollipop Chart: Number of Billionaires by Industry and SelfMade Status')
-    plt.xticks(rotation=90)
-
-    # Show chart in Streamlit
-    st.pyplot(fig)
-else:
-    st.info("Please upload a CSV file to see the chart.")
+# Hiển thị biểu đồ trong Streamlit
+st.pyplot(fig)
