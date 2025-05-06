@@ -33,14 +33,23 @@ for industry in industry_counts['industries'].unique():
 # Thiết lập tiêu đề và ghi chú cho biểu đồ
 fig.update_layout(
     title={'text': 'Interactive Lollipop Chart: Billionaires by Industry and Self Made Status', 
-           'font': {'size': 20, 'family': 'Arial', 'color': 'black', 'weight': 'bold'}},  # Tiêu đề in đậm
+           'font': {'size': 20, 'family': 'Arial', 'color': 'black', 'weight': 'bold'}},  # Tiêu đề in đậm và màu đen
     xaxis_title='Industry',
     yaxis_title='Number of Billionaires',
-    xaxis=dict(tickmode='array', tickvals=industry_counts['industries'].unique(), tickangle=45),
-    yaxis=dict(showgrid=True, gridcolor='lightgray'),  # Giảm độ đậm của các đường kẻ ngang
+    xaxis=dict(
+        tickmode='array', 
+        tickvals=industry_counts['industries'].unique(), 
+        tickangle=45,
+        title_font=dict(family='Arial', size=14, color='black')  # Màu chữ trục X là đen
+    ),
+    yaxis=dict(
+        showgrid=True, 
+        gridcolor='lightgray', 
+        title_font=dict(family='Arial', size=14, color='black')  # Màu chữ trục Y là đen
+    ),
     plot_bgcolor='white',  # Màu nền trắng
     paper_bgcolor='white',  # Màu nền giấy trắng
-    font=dict(family='Arial', size=12, color='black'),
+    font=dict(family='Arial', size=12, color='black'),  # Màu chữ chung là đen
     margin=dict(l=0, r=0, b=50, t=40),
     showlegend=False
 )
