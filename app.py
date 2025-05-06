@@ -24,10 +24,12 @@ for industry in industry_counts['industries'].unique():
         fig.add_trace(go.Scatter(
             x=[row['industries'], row['industries']], 
             y=[0, row['personName']], 
-            mode='lines+markers',
+            mode='lines+markers+text',  # Thêm văn bản (ghi chú)
             marker=dict(color='green' if row['selfMade'] else 'blue', size=10),
             line=dict(color='gray', width=1),  # Đổi đường line thành màu xám nhạt
-            name=f"{row['industries']} - {'Self Made' if row['selfMade'] else 'Not Self Made'}"
+            text=f"{row['personName']}",  # Hiển thị số lượng người
+            textposition="top center",  # Vị trí ghi chú trên mỗi cục
+            textfont=dict(family='Arial', size=12, color='black')  # Màu chữ ghi chú là đen
         ))
 
 # Thiết lập tiêu đề và ghi chú cho biểu đồ
