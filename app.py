@@ -26,7 +26,7 @@ for industry in industry_counts['industries'].unique():
             line=dict(color='gray', width=1),  # Đổi đường line thành màu xám nhạt
             text=f"{row['personName']}",  # Hiển thị số lượng người
             textposition="top center",  # Vị trí ghi chú trên mỗi cục
-            textfont=dict(family='Arial', size=12, color='#000000')  # Màu chữ ghi chú là đen
+            textfont=dict(family='Arial', size=12, color='black')  # Màu chữ ghi chú là đen
         ))
 
 # Thiết lập tiêu đề và ghi chú cho biểu đồ
@@ -39,12 +39,12 @@ fig.update_layout(
         tickmode='array', 
         tickvals=industry_counts['industries'].unique(), 
         tickangle=45,
-        title_font=dict(family='Arial', size=14, color='#000000')  # Màu chữ trục X là đen
+        title_font=dict(family='Arial', size=14, color='black')  # Màu chữ trục X là đen
     ),
     yaxis=dict(
         showgrid=True, 
         gridcolor='lightgray', 
-        title_font=dict(family='Arial', size=14, color='#000000')  # Màu chữ trục Y là đen
+        title_font=dict(family='Arial', size=14, color='black')  # Màu chữ trục Y là đen
     ),
     plot_bgcolor='white',  # Màu nền trắng
     paper_bgcolor='white',  # Màu nền giấy trắng
