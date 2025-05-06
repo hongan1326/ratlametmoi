@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 st.title("Billionaires Statistics - Lollipop Chart")
 
 # Upload CSV file
-uploaded_file = st.file_uploader("Upload your Billionaires Statistics CSV", type=["csv"])
+uploaded_file = st.file_uploader("Billionaires Statistics Dataet, type=["csv"])
 
 if uploaded_file is not None:
     # Read the CSV
