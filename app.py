@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
+import plotly.graph_objects as go
 
-st.title("Billionaires Statistics - Interactive Animated Chart")
+st.title("Billionaires Statistics - Interactive Lollipop Chart")
 
 # Đọc dữ liệu từ file CSV trong repo
 file_path = 'Billionaires Statistics Dataset.csv'  # Đảm bảo file nằm trong cùng thư mục với app.py
@@ -14,44 +14,33 @@ st.write(df.columns)
 # Nhóm dữ liệu theo 'industries' và 'selfMade'
 industry_counts = df.groupby(['industries', 'selfMade'])['personName'].count().reset_index()
 
-# Tạo biểu đồ scatter với các điểm có hiệu ứng chuyển động
-fig = px.scatter(industry_counts, 
-                 x='industries', 
-                 y='selfMade', 
-                 size='personName',  # Kích thước các cục tròn theo số lượng tỷ phú
-                 color='selfMade',  # Màu sắc phân biệt tự lập và không tự lập
-                 labels={'industries': 'Industry', 
-                         'selfMade': 'Self Made', 
-                         'personName': 'Number of Billionaires'},
-                 color_continuous_scale=['blue', 'green'], 
-                 title="Billionaires by Industry and Self Made Status")
+# Tạo biểu đồ lollipop
+fig = go.Figure()
 
-# Cập nhật kiểu cho các cục tròn đẹp mắt và chuyển động
-fig.update_traces(marker=dict(sizemode='diameter', 
-                              opacity=0.7, 
-                              line=dict(width=1, color='black'),
-                              symbol='circle'),
-                  selector=dict(mode='markers'))
+# Thêm các đường thẳng cho biểu đồ lollipop
+for industry in industry_counts['industries'].unique():
+    sub_df = industry_counts[industry_counts['industries'] == industry]
+    for _, row in sub_df.iterrows():
+        fig.add_trace(go.Scatter(
+            x=[row['industries'], row['industries']], 
+            y=[0, row['personName']], 
+            mode='lines+markers',
+            marker=dict(color='green' if row['selfMade'] else 'blue', size=10),
+            line=dict(color='black', width=2),
+            name=f"{row['industries']} - {'Self Made' if row['selfMade'] else 'Not Self Made'}"
+        ))
 
-# Thêm hiệu ứng animation (chuyển động)
+# Thiết lập tiêu đề và ghi chú cho biểu đồ
 fig.update_layout(
-    title='Billionaires by Industry and Self Made Status',
+    title='Interactive Lollipop Chart: Billionaires by Industry and Self Made Status',
     xaxis_title='Industry',
-    yaxis_title='Self Made Status',
-    margin=dict(l=0, r=0, b=40, t=40),  # Đảm bảo có đủ không gian xung quanh biểu đồ
+    yaxis_title='Number of Billionaires',
+    xaxis=dict(tickmode='array', tickvals=industry_counts['industries'].unique(), tickangle=45),
     plot_bgcolor='white',  # Màu nền trắng
     paper_bgcolor='white',  # Màu nền giấy trắng
     font=dict(family='Arial', size=12, color='black'),
-    updatemenus=[dict(
-        type='buttons',
-        showactive=False,
-        buttons=[dict(label='Play',
-                      method='animate',
-                      args=[None, dict(frame=dict(duration=1000, redraw=True), fromcurrent=True)])]
-    )],
-    sliders=[dict(
-        steps=[dict(label=str(i), method="animate", args=[[i], {"frame": {"duration": 500}}]) for i in range(1, 101)]
-    )]
+    margin=dict(l=0, r=0, b=50, t=40),
+    showlegend=False
 )
 
 # Hiển thị biểu đồ trong Streamlit
