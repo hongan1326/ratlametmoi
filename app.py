@@ -12,7 +12,7 @@ df = pd.read_csv(file_path)
 st.write(df.columns)
 
 # Nhóm dữ liệu theo 'industries' và 'selfMade'
-industry_counts = df.groupby(['industries', 'selfMade'])['Name'].count().reset_index()
+industry_counts = df.groupby(['industries', 'selfMade'])['personName'].count().reset_index()
 
 # Tạo biểu đồ lollipop
 fig, ax = plt.subplots(figsize=(10, 6))
@@ -23,7 +23,7 @@ colors = {'True': 'green', 'False': 'blue'}
 for industry in industries:
     sub_df = industry_counts[industry_counts['industries'] == industry]
     for _, row in sub_df.iterrows():
-        ax.plot([industry, industry], [0, row['Name']],
+        ax.plot([industry, industry], [0, row['personName']],
                 marker='o',
                 color=colors[str(row['selfMade'])])
 
