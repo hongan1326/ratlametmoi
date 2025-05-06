@@ -2,31 +2,37 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 
-# Đọc dữ liệu
-file_path = 'C:/Users/auqua/Documents/Billionaires Statistics Dataset.csv'  # chỉnh lại đường dẫn nếu cần
-df = pd.read_csv(file_path)
+st.title("Billionaires Statistics - Lollipop Chart")
 
-# Nhóm dữ liệu theo 'Industry' và 'SelfMade'
-industry_counts = df.groupby(['Industry', 'SelfMade'])['Name'].count().reset_index()
+# Upload CSV file
+uploaded_file = st.file_uploader("Upload your Billionaires Statistics CSV", type=["csv"])
 
-# Tạo lollipop chart
-fig, ax = plt.subplots(figsize=(10, 6))
+if uploaded_file is not None:
+    # Read the CSV
+    df = pd.read_csv(uploaded_file)
 
-industries = industry_counts['Industry'].unique()
-colors = {'True': 'green', 'False': 'blue'}
+    # Group data by 'Industry' and 'SelfMade'
+    industry_counts = df.groupby(['Industry', 'SelfMade'])['Name'].count().reset_index()
 
-for industry in industries:
-    sub_df = industry_counts[industry_counts['Industry'] == industry]
-    for _, row in sub_df.iterrows():
-        ax.plot([industry, industry], [0, row['Name']],
-                marker='o',
-                color=colors[str(row['SelfMade'])])
+    # Create lollipop chart
+    fig, ax = plt.subplots(figsize=(10, 6))
 
-ax.set_xlabel('Industry')
-ax.set_ylabel('Number of Billionaires')
-ax.set_title('Lollipop Chart: Number of Billionaires by Industry and SelfMade Status')
-plt.xticks(rotation=90)
+    industries = industry_counts['Industry'].unique()
+    colors = {'True': 'green', 'False': 'blue'}
 
-# Hiển thị trong Streamlit
-st.pyplot(fig)
+    for industry in industries:
+        sub_df = industry_counts[industry_counts['Industry'] == industry]
+        for _, row in sub_df.iterrows():
+            ax.plot([industry, industry], [0, row['Name']],
+                    marker='o',
+                    color=colors[str(row['SelfMade'])])
 
+    ax.set_xlabel('Industry')
+    ax.set_ylabel('Number of Billionaires')
+    ax.set_title('Lollipop Chart: Number of Billionaires by Industry and SelfMade Status')
+    plt.xticks(rotation=90)
+
+    # Show chart in Streamlit
+    st.pyplot(fig)
+else:
+    st.info("Please upload a CSV file to see the chart.")
