@@ -37,6 +37,7 @@ fig.update_layout(
     xaxis_title='Industry',
     yaxis_title='Number of Billionaires',
     xaxis=dict(tickmode='array', tickvals=industry_counts['industries'].unique(), tickangle=45),
+    yaxis=dict(showgrid=True, gridcolor='lightgray'),  # Giảm độ đậm của các đường kẻ ngang
     plot_bgcolor='white',  # Màu nền trắng
     paper_bgcolor='white',  # Màu nền giấy trắng
     font=dict(family='Arial', size=12, color='black'),
