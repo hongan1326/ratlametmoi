@@ -9,7 +9,7 @@ file_path = 'Billionaires Statistics Dataset.csv'  # Đảm bảo file nằm tro
 df = pd.read_csv(file_path)
 
 # Nhóm dữ liệu theo 'Industry' và 'SelfMade'
-industry_counts = df.groupby(['Industry', 'SelfMade'])['Name'].count().reset_index()
+industry_counts = df.groupby(['industry', 'selfMade'])['Name'].count().reset_index()
 
 # Tạo biểu đồ lollipop
 fig, ax = plt.subplots(figsize=(10, 6))
