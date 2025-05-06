@@ -1,8 +1,8 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
+import plotly.express as px
 
-st.title("Thống kê Tỷ phú - Biểu đồ Lollipop")
+st.title("Billionaires Statistics - 3D Lollipop Chart")
 
 # Đọc dữ liệu từ file CSV trong repo
 file_path = 'Billionaires Statistics Dataset.csv'  # Đảm bảo file nằm trong cùng thư mục với app.py
@@ -14,23 +14,28 @@ st.write(df.columns)
 # Nhóm dữ liệu theo 'industries' và 'selfMade'
 industry_counts = df.groupby(['industries', 'selfMade'])['personName'].count().reset_index()
 
-# Tạo biểu đồ lollipop
-fig, ax = plt.subplots(figsize=(10, 6))
+# Tạo biểu đồ 3D với Plotly
+fig = px.scatter_3d(industry_counts, 
+                    x='industries', 
+                    y='selfMade', 
+                    z='personName', 
+                    color='selfMade', 
+                    labels={'industries': 'Industry', 
+                            'selfMade': 'Self Made', 
+                            'personName': 'Number of Billionaires'},
+                    color_continuous_scale=['blue', 'green'])
 
-industries = industry_counts['industries'].unique()
-colors = {'True': 'green', 'False': 'blue'}
+fig.update_traces(marker=dict(size=10))
 
-for industry in industries:
-    sub_df = industry_counts[industry_counts['industries'] == industry]
-    for _, row in sub_df.iterrows():
-        ax.plot([industry, industry], [0, row['personName']],
-                marker='o',
-                color=colors[str(row['selfMade'])])
-
-ax.set_xlabel('Ngành nghề')
-ax.set_ylabel('Số lượng tỷ phú')
-ax.set_title('Biểu đồ Lollipop: Số lượng tỷ phú theo ngành và tình trạng tự lập')
-plt.xticks(rotation=90)
+# Thiết lập tiêu đề và ghi chú
+fig.update_layout(
+    title='3D Lollipop Chart: Number of Billionaires by Industry and Self Made Status',
+    scene=dict(
+        xaxis_title='Industry',
+        yaxis_title='Self Made',
+        zaxis_title='Number of Billionaires'
+    )
+)
 
 # Hiển thị biểu đồ trong Streamlit
-st.pyplot(fig)
+st.plotly_chart(fig)
